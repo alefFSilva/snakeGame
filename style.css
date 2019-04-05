@@ -16,7 +16,7 @@ body {
 }
 
 .gameTile {
-    border: 1px solid black;
+    border: 1px solid white;
     width: 10px;
     height: 10px;
 }
@@ -26,5 +26,6 @@ body {
 }
 
 .snakeFood {
-    background-color: black;
+    background-color: red;
+    border-radius: 40px;
 }

@@ -67,7 +67,7 @@ function startGame() {
 
 function runningGame() {
     moveSnake();
-    setTimeout(runningGame, 500);
+    setTimeout(runningGame, 100);
 }
 
 function moveSnake() {
