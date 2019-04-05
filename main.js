@@ -26,7 +26,7 @@ const startLine = 24;
 const startTile = 439;
 
 /**** --- GAME CONFIGS ------*/
-let lastSnakeHeadPositionId;
+let currentFoodPositionId = null;
 let isGameRunning = false;
 let currentSnakeDirection = snakeDirectionsEnum.ERROR;
 let snakeHeadId;
@@ -95,6 +95,12 @@ function moveSnake() {
                     break;
             }
             snakeHeadId = snakeBodyIdsArray[i];
+
+            if (snakeHeadId === currentFoodPositionId) {
+                resetSnakeFood();
+                snakeGrowth();
+            }
+
         } else {
             snakeBodyIdsArray[i] = lastPreviousTilePositionId;
         }
@@ -151,4 +157,39 @@ function moveToRightHandle(tileIndex) {
 
 function moveToLeftHandle(tileIndex) {
     snakeBodyIdsArray[tileIndex] = snakeBodyIdsArray[tileIndex] - 1; 
+}
+
+function resetSnakeFood() {
+    if (currentFoodPositionId !== undefined && currentFoodPositionId !== null) {
+        const currentFoodElement = document.getElementById(currentFoodPositionId);
+        currentFoodElement.classList.remove('snakeFood');
+    }
+
+    var totalTiles = maxLineSize * maxLineAmount; 
+    var randomPositionId = Math.floor( Math.random() * (+totalTiles - 0)) + +0;
+    var foodDocument = document.getElementById(randomPositionId);
+    foodDocument.classList.add('snakeFood');
+    currentFoodPositionId = randomPositionId;
+}
+
+function snakeGrowth() {
+    var lastSnakeTile = snakeBodyIdsArray[snakeBodyIdsArray.length - 1];
+    let newSnakeTile = null;
+    switch(currentSnakeDirection) {
+        case snakeDirectionsEnum.TOP:
+            newSnakeTile = lastSnakeTile + maxLineSize;
+            break;
+        case snakeDirectionsEnum.BOTTOM:
+            newSnakeTile = lastSnakeTile - maxLineSize;
+            break;
+        case snakeDirectionsEnum.LEFT:
+            newSnakeTile = lastSnakeTile + 1;
+            break;
+        case snakeDirectionsEnum.RIGHT:
+            newSnakeTile = lastSnakeTile - 1;
+            break;
+    }
+
+    snakeBodyIdsArray.push(newSnakeTile);
+    markSnakePosition(newSnakeTile);
 }

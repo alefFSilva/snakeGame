@@ -24,3 +24,7 @@ body {
 .snakeBodyTile {
     background-color: green;
 }
+
+.snakeFood {
+    background-color: black;
+}
