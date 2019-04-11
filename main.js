@@ -167,6 +167,12 @@ function resetSnakeFood() {
 
     var totalTiles = maxLineSize * maxLineAmount; 
     var randomPositionId = Math.floor( Math.random() * (+totalTiles - 0)) + +0;
+
+    while(isSnakeBodyId(randomPositionId)) {
+        randomPositionId = Math.floor( Math.random() * (+totalTiles - 0)) + +0;
+    }
+
+
     var foodDocument = document.getElementById(randomPositionId);
     foodDocument.classList.add('snakeFood');
     currentFoodPositionId = randomPositionId;
@@ -192,4 +198,9 @@ function snakeGrowth() {
 
     snakeBodyIdsArray.push(newSnakeTile);
     markSnakePosition(newSnakeTile);
+}
+
+function isSnakeBodyId(tileId) {
+    var isASnakeBodyPosition = snakeBodyIdsArray.includes(tileId);
+    return isASnakeBodyPosition;
 }
