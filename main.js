@@ -33,6 +33,7 @@ let snakeHeadId;
 let snakeSize = 5;
 let snakeBodyIdsArray = [];
 let snakeHeadTile = null;
+let borderIds = [];
 
 function initializeGameMap() {
     var gameContentDocument = document.getElementsByClassName('gameContent')[0];
@@ -42,6 +43,8 @@ function initializeGameMap() {
         newTile.classList.add('gameTile');
         gameContentDocument.appendChild(newTile);
     }
+
+    setBorderTiles();
 }
 
 function initializeSnake() {
@@ -99,6 +102,8 @@ function moveSnake() {
             if (snakeHeadId === currentFoodPositionId) {
                 resetSnakeFood();
                 snakeGrowth();
+            } else if(isBorderTile(snakeHeadId)){
+                alert("GameOver");
             }
 
         } else {
@@ -168,7 +173,7 @@ function resetSnakeFood() {
     var totalTiles = maxLineSize * maxLineAmount; 
     var randomPositionId = Math.floor( Math.random() * (+totalTiles - 0)) + +0;
 
-    while(isSnakeBodyId(randomPositionId)) {
+    while(isSnakeBodyId(randomPositionId) || isBorderTile(randomPositionId)) {
         randomPositionId = Math.floor( Math.random() * (+totalTiles - 0)) + +0;
     }
 
@@ -203,4 +208,40 @@ function snakeGrowth() {
 function isSnakeBodyId(tileId) {
     var isASnakeBodyPosition = snakeBodyIdsArray.includes(tileId);
     return isASnakeBodyPosition;
+}
+
+function setBorderTiles() {
+    let documentTile;
+
+    //Top Border
+    for(let i = 0; i < maxLineSize; i++) {
+        borderIds.push(i);
+        documentTile = document.getElementById(i);
+        documentTile.classList.add("borderTile");
+    }
+
+    //Left Border
+    for(let i = maxLineSize; i < totalTiles - maxLineSize; i += maxLineSize) {
+        borderIds.push(i);
+        documentTile = document.getElementById(i);
+        documentTile.classList.add("borderTile");
+    }
+
+    // Right Border
+    for(let i = (maxLineSize * 2)  - 1; i < totalTiles - maxLineSize; i += maxLineSize) {
+        borderIds.push(i);
+        documentTile = document.getElementById(i);
+        documentTile.classList.add("borderTile");
+    }
+
+    //Bottom Border
+    for(let i = totalTiles - maxLineSize; i < totalTiles; i++) {
+        borderIds.push(i);
+        documentTile = document.getElementById(i);
+        documentTile.classList.add("borderTile");
+    }
+}
+
+function isBorderTile(tileId) {
+    return borderIds.find((id) => id === tileId) !== undefined;
 }
